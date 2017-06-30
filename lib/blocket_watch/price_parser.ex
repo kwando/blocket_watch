@@ -13,11 +13,19 @@ defmodule BlocketWatch.PriceParser do
     20_000
   """
   def parse(price) when is_number(price), do: price
-  def parse(price) do
+  def parse(price) when is_binary(price) do
     price
       |> String.replace_suffix(":-", "")
       |> String.replace(" ", "")
       |> Integer.parse
       |> elem(0)
+  end
+  def parse(price), do: {:error, "cannot parse #{inspect(price)} into a price"}
+
+  def parse!(price) do
+    case parse(price) do
+      {:error, message} -> raise BlocketWatch.ParseError, message: message
+      price -> price
+    end
   end
 end

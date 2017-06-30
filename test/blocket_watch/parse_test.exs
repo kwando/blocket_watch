@@ -10,4 +10,12 @@ defmodule BlocketWatch.ParserTest do
     assert ad.description == "Mycket fin och trevligt utrustad Audi TT 2.0TFSI, 211hk med Quattro samt S-tronic, Vindruta med värmeisolerande glas, Automatiskt avbländande innerbackspegel, Blandad förbrukning 0.72 l/mil, Varmt välkomna till Toveks Bil i Lund"
     assert ad.url == nil
   end
+
+
+  test "parsing bad input" do
+    body   = "this is not an ad"
+    {:error, error} = BlocketWatch.Parser.parse(body)
+
+    assert is_binary(error)
+  end
 end
