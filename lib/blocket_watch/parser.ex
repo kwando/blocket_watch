@@ -19,10 +19,10 @@ defmodule BlocketWatch.Parser do
   end
 
   defp parse_price(price) do
-  	price
-  		|> String.replace_suffix(":-", "")
-  		|> String.replace(" ", "")
-  		|> Integer.parse
-  		|> elem(0)
+    price
+      |> String.replace_suffix(":-", "")
+      |> String.replace(" ", "")
+      |> Integer.parse
+      |> elem(0)
   end
 end
