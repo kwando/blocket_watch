@@ -1,20 +1,21 @@
 defmodule BlocketWatch.Parser do
-  import Meeseeks.CSS
   def parse(body) do
-  	document = Meeseeks.parse(body)
+    doc = Meeseeks.parse(body)
 
-
-    title = Meeseeks.one(document, css("h1.h3.subject_medium")) |> Meeseeks.text
-
-    description =  Meeseeks.one(document, css(".motor-car-description")) |> Meeseeks.text
-
-    price = Meeseeks.one(document, css("#price_container")) |> Meeseeks.text |> parse_price
+    title       = doc |> extract_text("h1.h3.subject_medium")
+    description = doc |> extract_text(".motor-car-description")
+    price       = doc |> extract_text("#price_container") |> parse_price
 
     {:ok, %BlocketWatch.Advertisment{
       price: price,
       title: title,
       description: description
     }}
+  end
+
+  defp extract_text(doc, selector) when is_binary(selector) do
+    import Meeseeks.CSS
+    Meeseeks.one(doc, css("#{selector}")) |> Meeseeks.text
   end
 
   defp parse_price(price) do
